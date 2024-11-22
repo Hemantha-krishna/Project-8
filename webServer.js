@@ -326,6 +326,53 @@ app.post("/commentsOfPhoto/:photo_id", async function (req, res) {
   }
 });
 
+app.get("/user/photoUsage/:id", async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).send({ message: "Invalid user ID format" });
+    }
+
+    const photos = await Photo.find({ user_id: userId });
+
+    if (!photos.length) {
+      return res.status(404).send({ message: "No photos found for this user" });
+    }
+
+    // Find the most recently uploaded photo
+    const mostRecentPhoto = photos.reduce((latest, photo) => {
+      return new Date(photo.date_time) > new Date(latest.date_time) ? photo : latest;
+    }, photos[0]);
+
+    // Find the photo with the most comments
+    const photoWithMostComments = photos.reduce((maxComments, photo) => {
+      return photo.comments.length > maxComments.comments.length ? photo : maxComments;
+    }, photos[0]);
+
+    const response = {
+      mostRecentPhoto: {
+        _id: mostRecentPhoto._id,
+        file_name: mostRecentPhoto.file_name,
+        date_time: mostRecentPhoto.date_time,
+      },
+      photoWithMostComments: {
+        _id: photoWithMostComments._id,
+        file_name: photoWithMostComments.file_name,
+        commentsCount: photoWithMostComments.comments.length,
+      },
+    };
+
+    res.status(200).json(response);
+  } catch (err) {
+    console.error("Error fetching photo usage details:", err);
+    res.status(500).send({ message: "Internal server error" });
+  }
+});
+
+
+
+
 // Start the server
 const server = app.listen(3000, () => {
   console.log(`Listening on http://localhost:${server.address().port}`);

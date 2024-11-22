@@ -1,19 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Card, CardContent, Grid, Button } from "@mui/material";
-import { Link } from "react-router-dom";
-import axios from "axios"; // Import axios
+import { Typography, Card, CardContent, Grid, Button, CardMedia } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./styles.css";
 
 function UserDetail({ userId }) {
   const [user, setUser] = useState(null);
+  const [photoUsage, setPhotoUsage] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`/user/${userId}`); // Use axios to fetch user data
-        setUser(response.data);
+        const userResponse = await axios.get(`/user/${userId}`);
+        const photoUsageResponse = await axios.get(`/user/photoUsage/${userId}`);
+
+        setUser(userResponse.data);
+        setPhotoUsage(photoUsageResponse.data);
       } catch (err) {
         setError(err);
       } finally {
@@ -56,10 +61,45 @@ function UserDetail({ userId }) {
               <strong>Description:</strong> {user.description}
             </Typography>
           </Grid>
+          {photoUsage && (
+            <>
+              <Grid item xs={12}>
+                <Typography variant="body1">
+                  <strong>Most Recently Uploaded Photo:</strong>
+                </Typography>
+                <CardMedia
+                  component="img"
+                  image={`/images/${photoUsage.mostRecentPhoto.file_name}`}
+                  alt="Most Recent Photo"
+                  onClick={() => navigate(`/photos/${userId}?photo=${photoUsage.mostRecentPhoto._id}`)}
+                  style={{ width: "250px", height: "auto", cursor: "pointer", objectFit: "cover" }}
+                />
+                <Typography variant="body2" color="textSecondary">
+                  Uploaded on: {new Date(photoUsage.mostRecentPhoto.date_time).toLocaleString()}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="body1">
+                  <strong>Photo with Most Comments:</strong>
+                </Typography>
+                <CardMedia
+                  component="img"
+                  image={`/images/${photoUsage.photoWithMostComments.file_name}`}
+                  alt="Photo with Most Comments"
+                  onClick={() => navigate(`/photos/${userId}?photo=${photoUsage.photoWithMostComments._id}`)}
+                  style={{ width: "250px", height: "auto", cursor: "pointer", objectFit: "cover" }}
+                  
+                />
+                <Typography variant="body2" color="textSecondary">
+                  Comments: {photoUsage.photoWithMostComments.commentsCount}
+                </Typography>
+              </Grid>
+            </>
+          )}
           <Grid item xs={12}>
-            <Link to={`/photos/${userId}`} style={{ textDecoration: 'none' }}>
+            <Link to={`/photos/${userId}`} style={{ textDecoration: "none" }}>
               <Button variant="contained" color="primary" className="view-photos-button">
-                View Photos
+                View All Photos
               </Button>
             </Link>
           </Grid>
