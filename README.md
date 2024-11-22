@@ -3,7 +3,7 @@
   | ---------- | ---------------------------------------------------------- | ---------------- |
   | Scrumboard |                                                            |                  |
   | **#**      | **User Story**                                             | **Story Points** |
-  | 1          |~~ _[Extend user profile detail with usage](#bookmark)_~~       | 3                |
+  | 1          |<s> _[Extend user profile detail with usage](#bookmark)_<s>       | 3                |
   | 2          | _[@mentions in comments](#bookmark1)_                      | 6                |
   | 3          | _[Visibility control of photos](#bookmark2)_               | 4                |
   | 4          | _[Activity feed](#bookmark3)_                              | 4                |
