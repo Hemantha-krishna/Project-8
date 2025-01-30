@@ -7,11 +7,11 @@
   | 2          |<s> _[@mentions in comments](#bookmark1)_                      | 6   <s>             |
   | 3          | _[Visibility control of photos](#bookmark2)_               | 4                |
   | 4          | _[Activity feed](#bookmark3)_                              | 4                |
-  | 5          | _[Deleting comments, photos, and users](#bookmark4)_       | 4                |
+  | 5          | <s>_[Deleting comments, photos, and users](#bookmark4)_       | 4      <s>          |
   | 6          |<s> _[Photo "like" votes](#bookmark5)_                         | 4   <s>             |
   | 7          | _[Favorite lists of photos for users](#bookmark6)_         | 6                |
   | 8          | _[Sidebar list marks users with new activity](#bookmark7)_ | 3                |
-  | 9          | _[Tagging photos](#bookmark8)_                             | 10               |
+  | 9          | <s>_[Tagging photos](#bookmark8)_                             | 10   <s>            |
 
 
 
